@@ -1,37 +1,37 @@
-package com.nowakowski.auctionservice.user;
+package com.nowakowski.auctionservice.bid;
 
 import com.google.common.collect.Lists;
 import com.nowakowski.auctionservice.exception.ResourceNotFoundException;
-import com.nowakowski.auctionservice.model.AuctionUser;
+import com.nowakowski.auctionservice.model.Bid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
-    private final UserRepository repository;
+public class BidService {
+    private final BidRepository repository;
 
     @Autowired
-    public UserService(UserRepository repository) {
+    public BidService(BidRepository repository) {
         this.repository = repository;
     }
 
-    public AuctionUser create(AuctionUser user) {
+    public Bid create(Bid user) {
         return repository.save(user);
     }
 
-    AuctionUser findOneBy(Long id) {
+    Bid findOneBy(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bid not found"));
     }
 
-    public List<AuctionUser> findAll() {
+    List<Bid> findAll() {
         return Lists.newArrayList(repository.findAll());
     }
 
-    void update(AuctionUser user) {
+    void update(Bid user) {
         repository.save(user);
     }
 

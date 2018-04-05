@@ -1,7 +1,7 @@
-package com.nowakowski.auctionservice.user;
+package com.nowakowski.auctionservice.auction;
 
 import com.google.common.base.Preconditions;
-import com.nowakowski.auctionservice.model.AuctionUser;
+import com.nowakowski.auctionservice.model.Auction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,42 +18,42 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "user")
-class UserController {
+@RequestMapping(path = "auction")
+public class AuctionController {
 
-    private final UserService service;
+    private final AuctionService service;
 
     @Autowired
-    public UserController(UserService service) {
+    public AuctionController(AuctionService service) {
         this.service = service;
     }
 
     @GetMapping
     @ResponseBody
-    public List<AuctionUser> retrieveAll() {
+    public List<Auction> retrieveAll() {
         return service.findAll();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public AuctionUser retrieveOne(@PathVariable("id") Long id) {
+    public Auction retrieveOne(@PathVariable("id") Long id) {
         return service.findOneBy(id);
     }
 
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody AuctionUser auctionUser) {
-        Preconditions.checkNotNull(auctionUser);
-        return service.create(auctionUser)
-                .getUserId();
+    public Long create(@RequestBody Auction auction) {
+        Preconditions.checkNotNull(auction);
+        return service.create(auction)
+                .getAuctionId();
     }
 
     @PutMapping(value = "/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody AuctionUser auctionUser) {
-        Preconditions.checkNotNull(auctionUser);
-        service.findOneBy(auctionUser.getUserId());
-        service.update(auctionUser);
+    public void update(@PathVariable("id") Long id, @RequestBody Auction auction) {
+        Preconditions.checkNotNull(auction);
+        service.findOneBy(auction.getAuctionId());
+        service.update(auction);
     }
 
     @DeleteMapping(value = "/{id}")
