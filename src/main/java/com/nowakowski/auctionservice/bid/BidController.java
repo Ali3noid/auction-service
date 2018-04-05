@@ -1,7 +1,7 @@
-package com.nowakowski.auctionservice.user;
+package com.nowakowski.auctionservice.bid;
 
 import com.google.common.base.Preconditions;
-import com.nowakowski.auctionservice.model.AuctionUser;
+import com.nowakowski.auctionservice.model.Bid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,42 +18,42 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "user")
-class UserController {
+@RequestMapping(path = "bid")
+public class BidController {
 
-    private final UserService service;
+    private final BidService service;
 
     @Autowired
-    public UserController(UserService service) {
+    public BidController(BidService service) {
         this.service = service;
     }
 
     @GetMapping
     @ResponseBody
-    public List<AuctionUser> retrieveAll() {
+    public List<Bid> retrieveAll() {
         return service.findAll();
     }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public AuctionUser retrieveOne(@PathVariable("id") Long id) {
+    public Bid retrieveOne(@PathVariable("id") Long id) {
         return service.findOneBy(id);
     }
 
     @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody AuctionUser auctionUser) {
-        Preconditions.checkNotNull(auctionUser);
-        return service.create(auctionUser)
-                .getUserId();
+    public Long create(@RequestBody Bid bid) {
+        Preconditions.checkNotNull(bid);
+        return service.create(bid)
+                .getBidId();
     }
 
     @PutMapping(value = "/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody AuctionUser auctionUser) {
-        Preconditions.checkNotNull(auctionUser);
-        service.findOneBy(auctionUser.getUserId());
-        service.update(auctionUser);
+    public void update(@PathVariable("id") Long id, @RequestBody Bid bid) {
+        Preconditions.checkNotNull(bid);
+        service.findOneBy(bid.getBidId());
+        service.update(bid);
     }
 
     @DeleteMapping(value = "/{id}")
