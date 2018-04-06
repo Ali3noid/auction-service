@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,7 +27,8 @@ public class Bid {
 
     @OneToOne
     @JoinColumn(name = "userId")
-    private AuctionUser auctionUser;
+    @NotNull
+    private AuctionUser bidder;
 
     @Column(nullable = false)
     private Long price;
@@ -36,5 +38,6 @@ public class Bid {
 
     @OneToOne
     @JoinColumn(name = "auctionId")
+    @NotNull
     private Auction auction;
 }
