@@ -108,21 +108,21 @@ public class FillerController {
                 .orElseThrow(() -> new ResourceNotFoundException("Auction not found"));
         bidService.create(Bid
                 .builder()
-                .auctionUser(users.get(1))
+                .bidder(users.get(1))
                 .creationDate(now.plusDays(1))
                 .auction(harryPotterAuction)
                 .price(12L)
                 .build());
         bidService.create(Bid
                 .builder()
-                .auctionUser(users.get(2))
+                .bidder(users.get(2))
                 .creationDate(now.plusDays(2))
                 .auction(harryPotterAuction)
                 .price(25L)
                 .build());
         bidService.create(Bid
                 .builder()
-                .auctionUser(users.get(1))
+                .bidder(users.get(1))
                 .creationDate(now.plusDays(3))
                 .auction(harryPotterAuction)
                 .price(47L)

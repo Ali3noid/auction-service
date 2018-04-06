@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -41,7 +42,8 @@ public class Auction {
     private String description;
 
     @OneToOne
-    @JoinColumn(name = "auctionId")
+    @JoinColumn(name = "userId")
+    @NotNull
     private AuctionUser creator;
 
     @Column(nullable = false)
