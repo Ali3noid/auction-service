@@ -5,20 +5,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("unused")
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class EmptyDescriptionException extends RuntimeException {
-    public EmptyDescriptionException() {
+public class MissingDetailException extends RuntimeException {
+    public MissingDetailException() {
         super();
     }
 
-    public EmptyDescriptionException(final String message, final Throwable cause) {
+    public MissingDetailException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public EmptyDescriptionException(final String message) {
+    public MissingDetailException(final String message) {
         super(message);
     }
 
-    public EmptyDescriptionException(final Throwable cause) {
+    public MissingDetailException(final Throwable cause) {
         super(cause);
     }
 }

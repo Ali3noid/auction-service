@@ -1,8 +1,7 @@
 package com.nowakowski.auctionservice.auction;
 
 import com.google.common.collect.Lists;
-import com.nowakowski.auctionservice.exception.NotDefinedCreatorException;
-import com.nowakowski.auctionservice.exception.EmptyDescriptionException;
+import com.nowakowski.auctionservice.exception.MissingDetailException;
 import com.nowakowski.auctionservice.exception.ResourceNotFoundException;
 import com.nowakowski.auctionservice.exception.WrongDateException;
 import com.nowakowski.auctionservice.exception.WrongPriceException;
@@ -53,11 +52,16 @@ public class AuctionService {
     }
 
     void deleteBy(Long id) {
+        checkIfAuctionExist(id);
         repository.deleteById(id);
     }
 
+    void checkIfAuctionExist(Long id) {
+        if (!repository.existsById(id)) throw new ResourceNotFoundException("Auction not found");
+    }
+
     private void validateCreator(AuctionUser auctionUser) {
-        if (auctionUser == null) throw new NotDefinedCreatorException("Creator of auction is undefined");
+        if (auctionUser == null) throw new MissingDetailException("Creator of auction is undefined");
     }
 
     private void validateStartingPrice(Long price) {
@@ -67,7 +71,7 @@ public class AuctionService {
     }
 
     private void validateDescription(String description) {
-        if (description.isEmpty()) throw new EmptyDescriptionException("Empty description is not allowed");
+        if (description.isEmpty()) throw new MissingDetailException("Empty description is not allowed");
     }
 
     private void validateDates(Auction auction) {
