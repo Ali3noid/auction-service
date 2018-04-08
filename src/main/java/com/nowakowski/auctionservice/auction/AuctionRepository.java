@@ -20,5 +20,5 @@ interface AuctionRepository extends CrudRepository<Auction, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE Auction a SET a.startingPrice = :#{#auction.startingPrice} WHERE a.auctionId = :id")
-    void updateStartingPrice(Long id, AuctionStartingPriceOnly auction);
+    void updateStartingPrice(@Param("id") Long id, @Param("auction") AuctionStartingPriceOnly auction);
 }
