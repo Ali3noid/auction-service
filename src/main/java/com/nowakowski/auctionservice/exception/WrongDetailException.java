@@ -5,20 +5,20 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @SuppressWarnings("unused")
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class WrongDateException extends RuntimeException {
-    public WrongDateException() {
+public class WrongDetailException extends RuntimeException {
+    public WrongDetailException() {
         super();
     }
 
-    public WrongDateException(final String message, final Throwable cause) {
+    public WrongDetailException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public WrongDateException(final String message) {
+    public WrongDetailException(final String message) {
         super(message);
     }
 
-    public WrongDateException(final Throwable cause) {
+    public WrongDetailException(final Throwable cause) {
         super(cause);
     }
 }

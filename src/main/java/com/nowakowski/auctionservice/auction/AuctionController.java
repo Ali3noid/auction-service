@@ -48,8 +48,8 @@ public class AuctionController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public Long create(@PathVariable("auctionId") Long auctionId, @RequestBody Bid bid) {
-        auctionService.findOneBy(auctionId);
         Preconditions.checkNotNull(bid);
+        auctionService.findOneBy(auctionId);
         return bidService.create(bid)
                 .getBidId();
     }
@@ -64,21 +64,21 @@ public class AuctionController {
 
     @GetMapping(value = "/{auctionId}")
     @ResponseBody
-    public Auction retrieveOne(@PathVariable("auctionId") Long auctionId) {
+    public Auction retrieveOneBy(@PathVariable("auctionId") Long auctionId) {
         return auctionService.findOneBy(auctionId);
     }
 
     @GetMapping(value = "/{auctionId}/bid")
     @ResponseBody
     public List<Bid> retrieveBy(@PathVariable("auctionId") Long auctionId) {
-        auctionService.checkIfAuctionExist(auctionId);
+        auctionService.validateAuctionExist(auctionId);
         return bidService.findBy(auctionId);
     }
 
     @GetMapping(value = "/{auctionId}/bid/{bidId}")
     @ResponseBody
-    public Bid retrieveOne(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
-        auctionService.checkIfAuctionExist(auctionId);
+    public Bid retrieveOneBy(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
+        auctionService.validateAuctionExist(auctionId);
         return bidService.findOneBy(bidId);
     }
     //</editor-fold>
@@ -87,27 +87,27 @@ public class AuctionController {
     @PatchMapping(value = "/{auctionId}/description")
     public void updateDescription(@PathVariable("auctionId") Long auctionId, @RequestBody AuctionDescriptionOnly descriptionOnly) {
         Preconditions.checkNotNull(descriptionOnly);
-        auctionService.checkIfAuctionExist(auctionId);
+        auctionService.validateAuctionExist(auctionId);
         auctionService.updateDescription(auctionId, descriptionOnly);
     }
 
     @PatchMapping(value = "/{auctionId}/starting-price")
     public void updateStartingPrice(@PathVariable("auctionId") Long auctionId, @RequestBody AuctionStartingPriceOnly priceOnly) {
         Preconditions.checkNotNull(priceOnly);
-        auctionService.checkIfAuctionExist(auctionId);
+        auctionService.validateAuctionExist(auctionId);
         auctionService.updateStartingPrice(auctionId, priceOnly);
     }
     //</editor-fold>
 
     //<editor-fold desc="delete-actions">
     @DeleteMapping(value = "/{auctionId}/bid/{bidId}")
-    public void delete(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
-        auctionService.checkIfAuctionExist(auctionId);
+    public void deleteBy(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
+        auctionService.validateAuctionExist(auctionId);
         bidService.deleteBy(bidId);
     }
 
     @DeleteMapping(value = "/{auctionId}")
-    public void delete(@PathVariable("auctionId") Long auctionId) {
+    public void deleteBy(@PathVariable("auctionId") Long auctionId) {
         auctionService.deleteBy(auctionId);
     }
     //</editor-fold>
