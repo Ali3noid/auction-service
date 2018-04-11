@@ -46,11 +46,11 @@ public class AuctionRepositoryTest {
                 .build();
         AuctionUser secondUser = AuctionUser
                 .builder()
-                .name("Jon Doe")
+                .name("Another Jon Doe")
                 .build();
         AuctionUser thirdUser = AuctionUser
                 .builder()
-                .name("Jon Doe")
+                .name("And Another One Jon Doe")
                 .build();
         Auction firstAuction = Auction
                 .builder()
