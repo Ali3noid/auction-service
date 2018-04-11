@@ -34,7 +34,7 @@ public class AuctionService {
         return Lists.newArrayList(repository.findAll());
     }
 
-    Auction findOneBy(Long id) {
+    Auction findOne(Long id) {
         return repository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Auction not found"));
@@ -50,7 +50,7 @@ public class AuctionService {
         repository.updateStartingPrice(id, auction);
     }
 
-    void deleteBy(Long id) {
+    void deleteOne(Long id) {
         validateAuctionExist(id);
         repository.deleteById(id);
     }
