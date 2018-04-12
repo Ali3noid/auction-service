@@ -30,6 +30,8 @@ public class AuctionServiceTest {
 
     private static final long NEGATIVE_PRICE = -100L;
     private static final long EXAMPLE_ID = 1L;
+    private static final String NEW_DESCRIPTION = "New description";
+    private static final long CURRENT_PRICE = 100L;
     @Mock
     private AuctionRepository repository;
 
@@ -223,6 +225,45 @@ public class AuctionServiceTest {
     }
 
     @Test
+    public void whenUpdateDescriptionNonExistsAuction_thenThrowResourceNotFoundException() {
+        // given
+        AuctionDescriptionOnly descriptionOnly = AuctionDescriptionOnly
+                .builder()
+                .description(NEW_DESCRIPTION)
+                .build();
+        Optional<Auction> optionalAuction = Optional.empty();
+        when(repository.findById(EXAMPLE_ID)).thenReturn(optionalAuction);
+
+        // when
+        Throwable thrown = catchThrowable(() -> service.updateDescription(EXAMPLE_ID, descriptionOnly));
+
+        // then
+        assertThat(thrown).isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Auction not found");
+    }
+
+    @Test
+    public void whenUpdateDescriptionBidAuction_thenThrowWrongDetailException() {
+        // given
+        AuctionDescriptionOnly descriptionOnly = AuctionDescriptionOnly
+                .builder()
+                .description(NEW_DESCRIPTION)
+                .build();
+        Auction auction = getExampleAuction();
+        auction.setCurrentPrice(CURRENT_PRICE);
+        Optional<Auction> optionalAuction = Optional.of(auction);
+
+        when(repository.findById(EXAMPLE_ID)).thenReturn(optionalAuction);
+
+        // when
+        Throwable thrown = catchThrowable(() -> service.updateDescription(EXAMPLE_ID, descriptionOnly));
+
+        // then
+        assertThat(thrown).isInstanceOf(WrongDetailException.class)
+                .hasMessageContaining("Updating is not allowed for already bid auction");
+    }
+
+    @Test
     public void whenUpdateAuctionWithEmptyDescription_thenThrowMissingDetailException() {
         // given
         AuctionDescriptionOnly descriptionOnly = AuctionDescriptionOnly
@@ -271,9 +312,10 @@ public class AuctionServiceTest {
     }
 
     @Test
-    public void whenValidateAuctionNotExists_thenThrowResourceNotFoundException() {
+    public void whenDeleteAuctionNotExists_thenThrowResourceNotFoundException() {
         // given
-        when(repository.existsById(EXAMPLE_ID)).thenReturn(FALSE);
+        Optional<Auction> optionalAuction = Optional.empty();
+        when(repository.findById(EXAMPLE_ID)).thenReturn(optionalAuction);
 
         // when
         Throwable thrown = catchThrowable(() -> service.deleteOne(EXAMPLE_ID));
@@ -281,6 +323,22 @@ public class AuctionServiceTest {
         //then
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Auction not found");
+    }
+
+    @Test
+    public void whenDeleteDescriptionBidAuction_thenThrowWrongDetailException() {
+        // given
+        Auction auction = getExampleAuction();
+        auction.setCurrentPrice(CURRENT_PRICE);
+        Optional<Auction> optionalAuction = Optional.of(auction);
+        when(repository.findById(EXAMPLE_ID)).thenReturn(optionalAuction);
+
+        // when
+        Throwable thrown = catchThrowable(() -> service.deleteOne(EXAMPLE_ID));
+
+        // then
+        assertThat(thrown).isInstanceOf(WrongDetailException.class)
+                .hasMessageContaining("Deleting is not allowed for already bid auction");
     }
 
 }
