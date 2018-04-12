@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 @Service
 public class AuctionService {
     private final AuctionRepository repository;
@@ -60,22 +62,26 @@ public class AuctionService {
             throw new ResourceNotFoundException("Auction not found");
     }
 
+    private void validateStartingPrice(Long price) {
+        if (price == null)
+            throw new MissingDetailException("Starting price must be given");
+        if (price < 0)
+            throw new WrongDetailException("Starting price must be non-negative");
+    }
+
     private void validateCreator(AuctionUser auctionUser) {
         if (auctionUser == null)
             throw new MissingDetailException("Creator of auction is undefined");
     }
 
-    private void validateStartingPrice(Long price) {
-        if (price == null || price < 0)
-            throw new WrongDetailException("Starting price must be non-negative");
-    }
-
     private void validateDescription(String description) {
-        if (description.isEmpty())
+        if (isEmpty(description))
             throw new MissingDetailException("Empty description is not allowed");
     }
 
     private void validateDates(Auction auction) {
+        if (auction.getFinishDate() == null || auction.getStartDate() == null)
+            throw new MissingDetailException("Starting and finish date must be given");
         if (isStartDateAfterFinishDate(auction))
             throw new WrongDetailException("Finish date can't be before start date");
     }

@@ -21,6 +21,7 @@ import static com.nowakowski.auctionservice.model.AuctionType.BOOKS;
 import static com.nowakowski.auctionservice.model.AuctionType.CLOTHES;
 import static com.nowakowski.auctionservice.model.AuctionType.FURNITURE;
 import static com.nowakowski.auctionservice.model.AuctionType.TOYS;
+import static com.nowakowski.auctionservice.util.AuctionHelper.getExampleAuction;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -30,7 +31,6 @@ public class AuctionRepositoryTest {
 
     private static final String NEW_DESCRIPTION = "third furniture";
     private static final long NEW_STARTING_PRICE = 900L;
-    private AuctionUser firstUser;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -40,7 +40,7 @@ public class AuctionRepositoryTest {
 
     @Before
     public void setUp() {
-        firstUser = AuctionUser
+        AuctionUser firstUser = AuctionUser
                 .builder()
                 .name("Jon Doe")
                 .build();
@@ -212,15 +212,5 @@ public class AuctionRepositoryTest {
                 .isTrue();
     }
 
-    private Auction getExampleAuction() {
-        return Auction
-                .builder()
-                .auctionType(FURNITURE)
-                .creator(firstUser)
-                .description("second furniture")
-                .startDate(LocalDateTime.now())
-                .finishDate(LocalDateTime.now().plusDays(7))
-                .startingPrice(10L)
-                .build();
-    }
+
 }
