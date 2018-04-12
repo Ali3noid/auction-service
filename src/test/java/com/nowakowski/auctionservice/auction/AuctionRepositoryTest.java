@@ -31,6 +31,7 @@ public class AuctionRepositoryTest {
 
     private static final String NEW_DESCRIPTION = "third furniture";
     private static final long NEW_STARTING_PRICE = 900L;
+    private AuctionUser firstUser;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -40,7 +41,7 @@ public class AuctionRepositoryTest {
 
     @Before
     public void setUp() {
-        AuctionUser firstUser = AuctionUser
+        firstUser = AuctionUser
                 .builder()
                 .name("Jon Doe")
                 .build();
@@ -92,6 +93,7 @@ public class AuctionRepositoryTest {
     public void whenSave_thenReturnAdditionalAuction() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
 
         // when
         auctionRepository.save(auction);
@@ -109,6 +111,7 @@ public class AuctionRepositoryTest {
     public void whenFindAll_thenReturnAllAuctions() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
         entityManager.persist(auction);
         entityManager.flush();
 
@@ -127,6 +130,7 @@ public class AuctionRepositoryTest {
     public void whenFindById_thenReturnAuction() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
 
         // when
         Auction createdAuction = auctionRepository.save(auction);
@@ -142,6 +146,7 @@ public class AuctionRepositoryTest {
     public void whenUpdateDescription_thenReturnAuctionWithChangedDescription() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
         Auction createdAuction = auctionRepository.save(auction);
         Long auctionId = createdAuction.getAuctionId();
 
@@ -164,6 +169,7 @@ public class AuctionRepositoryTest {
     public void whenUpdateStartingPrice_thenReturnAuctionWithChangedPrice() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
         Auction createdAuction = auctionRepository.save(auction);
         Long auctionId = createdAuction.getAuctionId();
 
@@ -186,6 +192,7 @@ public class AuctionRepositoryTest {
     public void whenDeletedById_thenReturnAuctionsWithoutDeletedOne() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
         Auction auctionToDelete = auctionRepository.save(auction);
 
         // when
@@ -202,15 +209,13 @@ public class AuctionRepositoryTest {
     public void whenExistsByIdForCreatedAuction_thenReturnTrue() {
         // given
         Auction auction = getExampleAuction();
+        auction.setCreator(firstUser);
         Auction createdAuction = auctionRepository.save(auction);
 
         // when
         Boolean check = auctionRepository.existsById(createdAuction.getAuctionId());
 
         // then
-        assertThat(check)
-                .isTrue();
+        assertThat(check).isTrue();
     }
-
-
 }

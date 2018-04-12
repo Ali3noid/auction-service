@@ -42,18 +42,26 @@ public class AuctionService {
                 .orElseThrow(() -> new ResourceNotFoundException("Auction not found"));
     }
 
-    void updateDescription(Long id, AuctionDescriptionOnly auction) {
-        validateDescription(auction.getDescription());
-        repository.updateDescription(id, auction);
+    void updateDescription(Long id, AuctionDescriptionOnly auctionDescriptionOnly) {
+        validateDescription(auctionDescriptionOnly.getDescription());
+        Auction auction = findOne(id);
+        if(auction.getCurrentPrice() != null)
+            throw new WrongDetailException("Updating is not allowed for already bid auction");
+        repository.updateDescription(id, auctionDescriptionOnly);
     }
 
-    void updateStartingPrice(Long id, AuctionStartingPriceOnly auction) {
-        validateStartingPrice(auction.getStartingPrice());
-        repository.updateStartingPrice(id, auction);
+    void updateStartingPrice(Long id, AuctionStartingPriceOnly auctionStartingPriceOnly) {
+        validateStartingPrice(auctionStartingPriceOnly.getStartingPrice());
+        Auction auction = findOne(id);
+        if(auction.getCurrentPrice() != null)
+            throw new WrongDetailException("Updating is not allowed for already bid auction");
+        repository.updateStartingPrice(id, auctionStartingPriceOnly);
     }
 
     void deleteOne(Long id) {
-        validateAuctionExist(id);
+        Auction auction = findOne(id);
+        if(auction.getCurrentPrice() != null)
+            throw new WrongDetailException("Deleting is not allowed for already bid auction");
         repository.deleteById(id);
     }
 

@@ -80,14 +80,12 @@ public class AuctionController {
     @PatchMapping(value = "/{auctionId}/description")
     public void updateDescription(@PathVariable("auctionId") Long auctionId, @RequestBody AuctionDescriptionOnly descriptionOnly) {
         Preconditions.checkNotNull(descriptionOnly);
-        auctionService.validateAuctionExist(auctionId);
         auctionService.updateDescription(auctionId, descriptionOnly);
     }
 
     @PatchMapping(value = "/{auctionId}/starting-price")
     public void updateStartingPrice(@PathVariable("auctionId") Long auctionId, @RequestBody AuctionStartingPriceOnly priceOnly) {
         Preconditions.checkNotNull(priceOnly);
-        auctionService.validateAuctionExist(auctionId);
         auctionService.updateStartingPrice(auctionId, priceOnly);
     }
     //</editor-fold>
