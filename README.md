@@ -1,7 +1,7 @@
 # auction-service
 Server-side app for example auction service using REST API
 
-Purpose of this bidRepository is creating a web application using following technologies:
+Purpose of this repository is creating a web application using following technologies:
 - Java 8
 - Spring boot
 - Hibernate
@@ -22,7 +22,7 @@ allowed update auction if someone else bid already. Repository and service layer
 user - more a placeholder than a real functional package. User is only a simple POJO with  one string field for name. 
 Just simple service with basic CRUD functionality without any validators.
 
-bid - only bidRepository and service layer. There is no dedicated controller for it.
+bid - only repository and service layer. There is no dedicated controller for it.
 
 exception - all custom exceptions are kept here. Each of them are throwing proper Http status.
 
