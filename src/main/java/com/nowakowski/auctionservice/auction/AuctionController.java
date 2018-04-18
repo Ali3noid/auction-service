@@ -33,10 +33,10 @@ public class AuctionController {
         this.bidService = bidService;
     }
 
-    //<editor-fold desc="create-actions">
+    //<editor-fold desc="create">
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody Auction auction) {
+    public Long createAuction(@RequestBody Auction auction) {
         Preconditions.checkNotNull(auction);
         return auctionService.create(auction)
                 .getAuctionId();
@@ -44,33 +44,33 @@ public class AuctionController {
 
     @PostMapping(value = "/{auctionId}/bid")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@PathVariable("auctionId") Long auctionId, @RequestBody Bid bid) {
+    public Long createBid(@PathVariable("auctionId") Long auctionId, @RequestBody Bid bid) {
         Preconditions.checkNotNull(bid);
-        auctionService.findOne(auctionId);
-        return bidService.create(bid)
+        Auction auction = auctionService.findOne(auctionId);
+        return bidService.create(bid, auction)
                 .getBidId();
     }
     //</editor-fold>
 
-    //<editor-fold desc="retrieve-actions">
+    //<editor-fold desc="retrieve">
     @GetMapping
-    public List<Auction> retrieveAll() {
+    public List<Auction> retrieveAllAuctions() {
         return auctionService.findAll();
     }
 
     @GetMapping(value = "/{auctionId}")
-    public Auction retrieveOne(@PathVariable("auctionId") Long auctionId) {
+    public Auction retrieveOneAuction(@PathVariable("auctionId") Long auctionId) {
         return auctionService.findOne(auctionId);
     }
 
     @GetMapping(value = "/{auctionId}/bid")
-    public List<Bid> retrieve(@PathVariable("auctionId") Long auctionId) {
+    public List<Bid> retrieveBidsBy(@PathVariable("auctionId") Long auctionId) {
         auctionService.validateAuctionExist(auctionId);
         return bidService.findBy(auctionId);
     }
 
     @GetMapping(value = "/{auctionId}/bid/{bidId}")
-    public Bid retrieveOne(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
+    public Bid retrieveOneBid(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
         auctionService.validateAuctionExist(auctionId);
         return bidService.findOneBy(bidId);
     }
@@ -92,13 +92,13 @@ public class AuctionController {
 
     //<editor-fold desc="deleteOne-actions">
     @DeleteMapping(value = "/{auctionId}/bid/{bidId}")
-    public void deleteOne(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
+    public void deleteBid(@PathVariable("auctionId") Long auctionId, @PathVariable("bidId") Long bidId) {
         auctionService.validateAuctionExist(auctionId);
         bidService.deleteBy(bidId);
     }
 
     @DeleteMapping(value = "/{auctionId}")
-    public void deleteOne(@PathVariable("auctionId") Long auctionId) {
+    public void deleteAuction(@PathVariable("auctionId") Long auctionId) {
         auctionService.deleteOne(auctionId);
     }
     //</editor-fold>

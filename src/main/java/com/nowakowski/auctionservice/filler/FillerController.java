@@ -112,21 +112,21 @@ public class FillerController {
                 .creationDate(now.plusDays(1))
                 .auction(harryPotterAuction)
                 .price(12L)
-                .build());
+                .build(), harryPotterAuction);
         bidService.create(Bid
                 .builder()
                 .bidder(users.get(2))
                 .creationDate(now.plusDays(2))
                 .auction(harryPotterAuction)
                 .price(25L)
-                .build());
+                .build(), harryPotterAuction);
         bidService.create(Bid
                 .builder()
                 .bidder(users.get(1))
                 .creationDate(now.plusDays(3))
                 .auction(harryPotterAuction)
                 .price(47L)
-                .build());
+                .build(), harryPotterAuction);
         return "Bids were added";
     }
 
